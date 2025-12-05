@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% block title %}Бронирование{% endblock %}
+{% block content %}
+<h1>Создать бронирование</h1>
+<div class="card" style="max-width:600px;">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div style="margin-top:10px; display:flex; gap:10px;">
+      <button type="submit" class="btn">Забронировать</button>
+      <a href="{% url 'main:home' %}" class="btn" style="background:#ddd; color:#333;">Отмена</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

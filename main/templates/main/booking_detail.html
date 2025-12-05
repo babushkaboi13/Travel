@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block title %}Бронирование #{{ booking.id }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:700px;">
+  <h1>Бронирование #{{ booking.id }}</h1>
+
+  <h2>Клиент</h2>
+  <p>{{ booking.client.full_name }}</p>
+  <p>Email: {{ booking.client.email }}</p>
+  <p>Телефон: {{ booking.client.phone }}</p>
+
+  <hr>
+  <h2>Тур</h2>
+  <p><strong>{{ booking.tour.title }}</strong></p>
+  <p>Страна: {{ booking.tour.country }}</p>
+  <p>Длительность: {{ booking.tour.duration_days }} дня(ей)</p>
+  <p>Цена: {{ booking.tour.price }} ₽</p>
+
+  {% if booking.hotel %}
+  <hr>
+  <h2>Отель</h2>
+  <p>{{ booking.hotel.name }}, {{ booking.hotel.city }}</p>
+  <p>Звезды: {{ booking.hotel.stars }} ★</p>
+  {% endif %}
+
+  {% if booking.transport %}
+  <hr>
+  <h2>Транспорт</h2>
+  <p>{{ booking.transport.transport_type }} — {{ booking.transport.company }}</p>
+  <p>Из: {{ booking.transport.departure_city }}</p>
+  <p>В: {{ booking.transport.arrival_city }}</p>
+  <p>Дата: {{ booking.transport.date }}</p>
+  {% endif %}
+
+  <hr>
+  <h2>Информация о брони</h2>
+  <p>Количество людей: {{ booking.people }}</p>
+  <p>Общая стоимость: <strong>{{ booking.total_price }} ₽</strong></p>
+
+  <hr>
+  <div style="display:flex;gap:10px;">
+    <a class="btn" href="{% url 'main:payment' %}">Оплатить</a>
+    <a class="btn" href="{% url 'main:profile' %}" style="background:#ddd;color:#333;">Вернуться в профиль</a>
+  </div>
+</div>
+{% endblock %}

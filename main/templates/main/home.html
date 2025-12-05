@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<h1>Популярные туры</h1>
+<div class="grid" style="margin-top:20px;">
+  {% for tour in tours %}
+    <div class="card">
+      <h3><a href="{% url 'main:tour_detail' tour.id %}">{{ tour.title }}</a></h3>
+      <p class="muted">{{ tour.country }} · {{ tour.duration_days }} дня(ей)</p>
+      <p>{{ tour.description|truncatechars:120 }}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+        <strong>{{ tour.price }} ₽</strong>
+        <a class="btn" href="{% url 'main:tour_detail' tour.id %}">Подробнее</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>Туров пока нет.</p>
+  {% endfor %}
+</div>
+{% endblock %}

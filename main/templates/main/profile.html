@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-3">{{ client.full_name }}</h2>
+
+<div class="card shadow p-4 mb-4">
+    <h4>Личная информация</h4>
+    <p>Email: <strong>{{ client.email }}</strong></p>
+    <p>Телефон: <strong>{{ client.phone }}</strong></p>
+    <p>Паспорт: <strong>{{ client.passport_number }}</strong></p>
+</div>
+
+<h3 class="fw-bold mb-3">Ваши бронирования</h3>
+
+{% if bookings %}
+    {% for booking in bookings %}
+        <div class="card shadow p-3 mb-3">
+            <h5>{{ booking.tour.title }}</h5>
+            <p>Кол-во людей: {{ booking.people }}</p>
+            <p>Общая стоимость: <strong>{{ booking.total_price }} ₽</strong></p>
+            <a href="{% url 'main:booking_detail' booking.id %}" class="btn">Подробнее</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">У вас пока нет бронирований.</p>
+{% endif %}
+
+<a href="{% url 'main:create_booking' %}" class="btn">Создать бронирование</a>
+<a href="{% url 'main:logout' %}" class="btn" style="background:#dc3545;color:white;margin-left:10px;">Выйти</a>
+
+{% endblock %}

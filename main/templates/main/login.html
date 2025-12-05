@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div style="max-width:400px; margin:auto;">
+  <h1>Вход</h1>
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div style="margin-top:10px; display:flex; gap:10px;">
+        <button type="submit" class="btn">Войти</button>
+        <a href="{% url 'main:register' %}" class="btn" style="background:#ddd;color:#333;">Регистрация</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
