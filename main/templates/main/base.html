@@ -3,80 +3,490 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Турагентство{% endblock %}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>{% block title %}Sunny Travel - Турагентство{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #0ea5a4;
-      --accent: #14b8a6;
-      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #f59e0b;
+      --accent: #10b981;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --muted: #64748b;
       --card-bg: #ffffff;
-      --card-border: #e6e9ee;
+      --card-border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Inter', sans-serif;
-      margin:0; background:#f9fafb; color:#111;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
     }
+    
+    /* Header */
     header {
-      background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .container { max-width:1100px; margin:0 auto; padding:20px; }
-    nav a { margin-left:15px; text-decoration:none; color:#111; font-weight:500; }
-    a.logo { font-size:22px; font-weight:600; color:var(--primary); text-decoration:none; }
-    main { padding:28px 0; }
-    .card { background:var(--card-bg); border:1px solid var(--card-border); border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-    .btn { display:inline-block; padding:10px 16px; border-radius:8px; background:var(--primary); color:#fff; text-decoration:none; font-weight:500; transition:0.2s;}
-    .btn:hover { background:var(--accent);}
-    .muted { color:var(--muted);}
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
-    .messages { list-style:none; padding:0; margin:0 0 20px 0; }
-    .messages li { 
-      background:#d1fae5; 
-      border-left:4px solid #10b981; 
-      padding:12px 16px; 
-      margin-bottom:10px; 
-      border-radius:6px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .logo i {
+      color: var(--secondary);
+      font-size: 28px;
+    }
+    
+    /* Search Container */
+    .search-container {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 20px;
+      position: relative;
+    }
+    
+    .search-form {
+      position: relative;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 50px 12px 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 30px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.5);
+    }
+    
+    .search-input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .search-button {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    .advanced-search-btn {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: none;
+      margin-top: 10px;
+    }
+    
+    .suggestions-header {
+      padding: 15px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .suggestions-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .tag {
+      background: #f0f9ff;
+      color: #0369a1;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .tag:hover {
+      background: #e0f2fe;
+      transform: translateY(-2px);
+    }
+    
+    .suggestions-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .suggestion-item {
+      padding: 12px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      transition: background 0.2s;
+    }
+    
+    .suggestion-item:hover {
+      background: #f8fafc;
+    }
+    
+    /* Navigation */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    nav a:hover {
+      color: var(--secondary);
+      transform: translateY(-2px);
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-info span {
+      font-weight: 500;
+    }
+    
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #d97706;
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    
+    /* Main content */
+    main {
+      min-height: calc(100vh - 180px);
+    }
+    
+    /* Messages */
+    .messages {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+    
+    .messages li {
+      padding: 15px 20px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+    }
+    
+    .messages li.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid var(--accent);
+    }
+    
     .messages li.error {
-      background:#fee2e2;
-      border-left-color:#ef4444;
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
     }
+    
     .messages li.info {
-      background:#dbeafe;
-      border-left-color:#3b82f6;
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
     }
+    
     .messages li.warning {
-      background:#fef3c7;
-      border-left-color:#f59e0b;
+      background-color: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
     }
-    .message-close { 
-      background:none; 
-      border:none; 
-      color:#666; 
-      cursor:pointer; 
-      font-size:18px;
-      line-height:1;
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 60px;
     }
-    footer { padding:20px 0; border-top:1px solid #eee; margin-top:40px; color:var(--muted); font-size:14px; text-align:center;}
-    input, select, textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-top:6px;}
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-section h3 {
+      color: var(--secondary);
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    
+    .footer-section p {
+      color: #cbd5e1;
+      margin-bottom: 15px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      color: white;
+      font-size: 20px;
+      transition: color 0.3s;
+    }
+    
+    .social-links a:hover {
+      color: var(--secondary);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    
+    /* Utility classes */
+    .text-center { text-align: center; }
+    .text-muted { color: var(--muted); }
+    .mt-1 { margin-top: 10px; }
+    .mt-2 { margin-top: 20px; }
+    .mt-3 { margin-top: 30px; }
+    .mt-4 { margin-top: 40px; }
+    .mb-1 { margin-bottom: 10px; }
+    .mb-2 { margin-bottom: 20px; }
+    .mb-3 { margin-bottom: 30px; }
+    .mb-4 { margin-bottom: 40px; }
+    .py-2 { padding-top: 20px; padding-bottom: 20px; }
+    .py-3 { padding-top: 30px; padding-bottom: 30px; }
+    .py-4 { padding-top: 40px; padding-bottom: 40px; }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 0;
+      }
+      
+      .search-container {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin: 10px 0;
+      }
+      
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .advanced-search-btn {
+        display: none;
+      }
+    }
   </style>
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
   <header>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
-      <a class="logo" href="{% url 'main:home' %}">Турагентство</a>
+    <div class="container header-container">
+      <a class="logo" href="{% url 'main:home' %}">
+        <i class="fas fa-plane-departure"></i>
+        <span>Sunny Travel</span>
+      </a>
+      
+      <!-- Поисковая строка -->
+      <div class="search-container">
+        <form action="{% url 'main:search' %}" method="get" class="search-form" id="searchForm">
+          <input type="text" 
+                 name="q" 
+                 id="searchInput"
+                 class="search-input"
+                 placeholder="Поиск туров по стране, городу или названию..." 
+                 value="{{ request.GET.q|default:'' }}"
+                 autocomplete="off">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+          <a href="{% url 'main:search' %}" class="advanced-search-btn" title="Расширенный поиск">
+            <i class="fas fa-sliders-h"></i>
+          </a>
+        </form>
+        
+        <!-- Выпадающий список с подсказками -->
+        <div class="search-suggestions" id="searchSuggestions">
+          <div class="suggestions-header">
+            <div style="font-weight: 600; color: var(--dark); margin-bottom: 10px;">Популярные запросы:</div>
+            <div class="suggestions-tags">
+              <a href="{% url 'main:search' %}?q=Турция" class="tag">Турция</a>
+              <a href="{% url 'main:search' %}?q=Италия" class="tag">Италия</a>
+              <a href="{% url 'main:search' %}?q=пляжный отдых" class="tag">Пляжный отдых</a>
+              <a href="{% url 'main:search' %}?q=горнолыжный" class="tag">Горнолыжный</a>
+              <a href="{% url 'main:search' %}?q=Таиланд" class="tag">Таиланд</a>
+              <a href="{% url 'main:search' %}?q=экскурсии" class="tag">Экскурсии</a>
+            </div>
+          </div>
+          <div class="suggestions-list" id="suggestionsList"></div>
+        </div>
+      </div>
+      
       <nav>
-        <a href="{% url 'main:home' %}">Главная</a>
+        <a href="{% url 'main:home' %}">
+          <i class="fas fa-home"></i>
+          <span>Главная</span>
+        </a>
+        
         {% if user.is_authenticated %}
-          <a href="{% url 'main:profile' %}">Профиль</a>
-          <a href="{% url 'main:create_booking' %}">Бронирование</a>
-          <a href="{% url 'main:logout' %}">Выход</a>
+          <div class="user-info">
+            <span style="color: #fbbf24;">Привет, {{ user.username }}!</span>
+            <a href="{% url 'main:profile' %}">
+              <i class="fas fa-user-circle"></i>
+              <span>Профиль</span>
+            </a>
+            <a href="{% url 'main:create_booking' %}">
+              <i class="fas fa-suitcase"></i>
+              <span>Бронирование</span>
+            </a>
+            <a href="{% url 'main:logout' %}" style="color: #fca5a5;">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Выход</span>
+            </a>
+          </div>
         {% else %}
-          <a href="{% url 'main:login' %}">Вход</a>
-          <a href="{% url 'main:register' %}">Регистрация</a>
+          <a href="{% url 'main:login' %}">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Вход</span>
+          </a>
+          <a href="{% url 'main:register' %}">
+            <i class="fas fa-user-plus"></i>
+            <span>Регистрация</span>
+          </a>
         {% endif %}
       </nav>
     </div>
@@ -88,16 +498,159 @@
         {% for message in messages %}
           <li class="{{ message.tags }}">
             {{ message }}
-            <button class="message-close" onclick="this.parentElement.remove()">&times;</button>
+            <button onclick="this.parentElement.remove()" style="background:none;border:none;color:inherit;cursor:pointer;">
+              <i class="fas fa-times"></i>
+            </button>
           </li>
         {% endfor %}
       </ul>
     {% endif %}
+    
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="container">
-    © {% now "Y" %} Турагентство. Все права защищены.
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>О Sunny Travel</h3>
+          <p>Мы создаём незабываемые путешествия с 2010 года. Более 50,000 довольных клиентов по всему миру.</p>
+          <p><i class="fas fa-award"></i> Лучший туроператор 2024</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Контакты</h3>
+          <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Тверская, 15</p>
+          <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+          <p><i class="fas fa-envelope"></i> info@sunnytravel.ru</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Полезные ссылки</h3>
+          <p><a href="#" style="color:#cbd5e1;text-decoration:none;">Как забронировать тур</a></p>
+          <p><a href="#" style="color:#cbd5e1;text-decoration:none;">Частые вопросы</a></p>
+          <p><a href="#" style="color:#cbd5e1;text-decoration:none;">Отзывы клиентов</a></p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Мы в соцсетях</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-vk"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} Sunny Travel. Все права защищены.</p>
+        <p>ИП Иванов И.И. ОГРНИП 123456789012345</p>
+      </div>
+    </div>
   </footer>
+
+  <script>
+    // Автоматическое скрытие сообщений через 5 секунд
+    setTimeout(() => {
+      const messages = document.querySelectorAll('.messages li');
+      messages.forEach(msg => {
+        msg.style.transition = 'opacity 0.5s';
+        msg.style.opacity = '0';
+        setTimeout(() => msg.remove(), 500);
+      });
+    }, 5000);
+
+    // Поиск с автодополнением
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const searchSuggestions = document.getElementById('searchSuggestions');
+      const suggestionsList = document.getElementById('suggestionsList');
+      const searchForm = document.getElementById('searchForm');
+      
+      if (searchInput) {
+        // Показать/скрыть подсказки при фокусе
+        searchInput.addEventListener('focus', function() {
+          searchSuggestions.style.display = 'block';
+        });
+        
+        searchInput.addEventListener('blur', function() {
+          setTimeout(() => {
+            searchSuggestions.style.display = 'none';
+          }, 200);
+        });
+        
+        // Автодополнение при вводе
+        searchInput.addEventListener('input', function() {
+          const query = this.value.trim();
+          
+          if (query.length >= 2) {
+            const suggestions = [
+              'Турция все включено',
+              'Италия экскурсии',
+              'Швейцария горнолыжный курорт',
+              'Таиланд пляжный отдых',
+              'ОАЭ Дубай',
+              'Греция острова',
+              'Испания Барселона',
+              'Франция Париж',
+              'Египет Шарм-эль-Шейх',
+              'Кипр Лимассол',
+              'Вьетнам Нячанг',
+              'Мальдивы роскошный отдых',
+              'Бали индонезия',
+              'Япония Токио'
+            ];
+            
+            const filtered = suggestions.filter(s => 
+              s.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filtered.length > 0) {
+              suggestionsList.innerHTML = filtered.map(s => `
+                <div class="suggestion-item" onclick="document.getElementById('searchInput').value='${s}'; document.getElementById('searchForm').submit();">
+                  <div style="color: var(--dark); margin-bottom: 3px;">${s}</div>
+                  <div style="font-size: 12px; color: var(--muted);">
+                    <i class="fas fa-search" style="margin-right: 5px;"></i>
+                    Найти туры
+                  </div>
+                </div>
+              `).join('');
+            } else {
+              suggestionsList.innerHTML = `
+                <div style="padding: 20px; text-align: center; color: var(--muted);">
+                  <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px;"></i>
+                  <div>Попробуйте другой запрос</div>
+                </div>
+              `;
+            }
+          } else {
+            suggestionsList.innerHTML = '';
+          }
+        });
+        
+        // Очистка поиска по клавише Escape
+        searchInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            this.value = '';
+            searchSuggestions.style.display = 'none';
+          }
+          if (e.key === 'Enter' && this.value.trim()) {
+            searchSuggestions.style.display = 'none';
+          }
+        });
+      }
+      
+      // Быстрый поиск при клике на тег
+      document.querySelectorAll('.tag').forEach(tag => {
+        tag.addEventListener('click', function(e) {
+          e.preventDefault();
+          const url = this.getAttribute('href');
+          window.location.href = url;
+        });
+      });
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

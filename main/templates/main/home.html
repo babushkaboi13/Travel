@@ -1,20 +1,727 @@
 {% extends 'main/base.html' %}
-{% block title %}Главная{% endblock %}
+{% block title %}Sunny Travel - Лучшие туры по всему миру{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Hero section */
+  .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    border-radius: 16px;
+    margin: 40px 0 60px;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: 700;
+  }
+  
+  .hero p {
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    color: #e2e8f0;
+  }
+  
+  /* Search results banner */
+  .search-banner {
+    background: #e0f2fe;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    animation: slideIn 0.5s ease;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .search-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search-banner h3 {
+    margin-bottom: 5px;
+    color: #0369a1;
+  }
+  
+  .search-banner p {
+    color: #0c4a6e;
+  }
+  
+  /* Quick search */
+  .quick-search {
+    margin-bottom: 60px;
+  }
+  
+  .quick-search h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: var(--dark);
+    position: relative;
+  }
+  
+  .quick-search h2:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--secondary);
+    margin: 15px auto;
+    border-radius: 2px;
+  }
+  
+  .quick-search-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .quick-tag {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 30px;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .quick-tag:hover {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  
+  .quick-tag i {
+    font-size: 18px;
+  }
+  
+  /* Features */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+  
+  .feature-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .feature-icon {
+    font-size: 40px;
+    color: var(--primary);
+    margin-bottom: 20px;
+  }
+  
+  .feature-card h3 {
+    margin-bottom: 15px;
+    color: var(--dark);
+  }
+  
+  /* Tours section */
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    color: var(--dark);
+    position: relative;
+  }
+  
+  .section-title:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--secondary);
+    margin: 15px auto;
+    border-radius: 2px;
+  }
+  
+  .tours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+  
+  .tour-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .tour-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .tour-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .tour-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--secondary);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  
+  .tour-content {
+    padding: 20px;
+  }
+  
+  .tour-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--dark);
+  }
+  
+  .tour-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .tour-title a:hover {
+    color: var(--primary);
+  }
+  
+  .tour-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  
+  .tour-meta i {
+    margin-right: 5px;
+  }
+  
+  .tour-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 15px;
+  }
+  
+  .tour-description {
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  /* Stats */
+  .stats {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 60px 0;
+    border-radius: 16px;
+    margin-bottom: 60px;
+    text-align: center;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+  }
+  
+  .stat-item h3 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: var(--secondary);
+  }
+  
+  .stat-item p {
+    font-size: 18px;
+    opacity: 0.9;
+  }
+  
+  /* Testimonials */
+  .testimonials {
+    margin-bottom: 60px;
+  }
+  
+  .testimonial-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+  }
+  
+  .testimonial-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  
+  .testimonial-text {
+    font-style: italic;
+    margin-bottom: 20px;
+    color: var(--dark);
+    line-height: 1.8;
+  }
+  
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+  }
+  
+  .author-info h4 {
+    margin-bottom: 5px;
+  }
+  
+  .author-info p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  
+  /* Newsletter */
+  .newsletter {
+    background: var(--accent);
+    color: white;
+    padding: 50px;
+    border-radius: 16px;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .newsletter h2 {
+    margin-bottom: 15px;
+  }
+  
+  .newsletter p {
+    margin-bottom: 25px;
+    opacity: 0.9;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+  
+  .newsletter-form input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 36px;
+    }
+    
+    .hero p {
+      font-size: 18px;
+    }
+    
+    .search-banner-content {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+    
+    .newsletter-form {
+      flex-direction: column;
+    }
+    
+    .tour-meta {
+      flex-direction: column;
+      gap: 5px;
+    }
+    
+    .quick-search-tags {
+      gap: 10px;
+    }
+    
+    .quick-tag {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>Популярные туры</h1>
-<div class="grid" style="margin-top:20px;">
-  {% for tour in tours %}
-    <div class="card">
-      <h3><a href="{% url 'main:tour_detail' tour.id %}">{{ tour.title }}</a></h3>
-      <p class="muted">{{ tour.country }} · {{ tour.duration_days }} дня(ей)</p>
-      <p>{{ tour.description|truncatechars:120 }}</p>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
-        <strong>{{ tour.price }} ₽</strong>
-        <a class="btn" href="{% url 'main:tour_detail' tour.id %}">Подробнее</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Откройте мир с Sunny Travel</h1>
+      <p>Лучшие туры по всему миру с гарантией качества и выгодными ценами. Ваше идеальное путешествие начинается здесь!</p>
+      {% if user.is_authenticated %}
+        <a href="{% url 'main:create_booking' %}" class="btn btn-secondary">
+          <i class="fas fa-plus-circle"></i>
+          Забронировать тур
+        </a>
+      {% else %}
+        <a href="{% url 'main:register' %}" class="btn btn-secondary">
+          <i class="fas fa-user-plus"></i>
+          Начать путешествие
+        </a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Баннер результатов поиска -->
+  {% if search_query %}
+    <div class="search-banner">
+      <div class="search-banner-content">
+        <div>
+          <h3>Результаты поиска для "{{ search_query }}"</h3>
+          <p>Найдено туров: {{ tours.count }}</p>
+        </div>
+        <a href="{% url 'main:home' %}" class="btn" style="background: white; color: #0369a1;">
+          <i class="fas fa-times"></i>
+          Очистить поиск
+        </a>
       </div>
     </div>
-  {% empty %}
-    <p>Туров пока нет.</p>
-  {% endfor %}
-</div>
+  {% endif %}
+
+  <!-- Быстрый поиск -->
+  <section class="quick-search">
+    <h2>Быстрый поиск туров</h2>
+    <div class="quick-search-tags">
+      <a href="{% url 'main:search' %}?q=Турция" class="quick-tag">
+        <i class="fas fa-umbrella-beach"></i>
+        Турция
+      </a>
+      <a href="{% url 'main:search' %}?q=Италия" class="quick-tag">
+        <i class="fas fa-landmark"></i>
+        Италия
+      </a>
+      <a href="{% url 'main:search' %}?q=Швейцария" class="quick-tag">
+        <i class="fas fa-skiing"></i>
+        Швейцария
+      </a>
+      <a href="{% url 'main:search' %}?q=Таиланд" class="quick-tag">
+        <i class="fas fa-spa"></i>
+        Таиланд
+      </a>
+      <a href="{% url 'main:search' %}?q=ОАЭ" class="quick-tag">
+        <i class="fas fa-mosque"></i>
+        ОАЭ
+      </a>
+      <a href="{% url 'main:search' %}?q=Греция" class="quick-tag">
+        <i class="fas fa-water"></i>
+        Греция
+      </a>
+      <a href="{% url 'main:search' %}?q=пляжный отдых" class="quick-tag">
+        <i class="fas fa-sun"></i>
+        Пляжный отдых
+      </a>
+      <a href="{% url 'main:search' %}?q=экскурсионный тур" class="quick-tag">
+        <i class="fas fa-monument"></i>
+        Экскурсионный тур
+      </a>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <h3>Гарантия безопасности</h3>
+      <p>Все туры застрахованы, работаем только с проверенными отелями и авиакомпаниями</p>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-hand-holding-usd"></i>
+      </div>
+      <h3>Лучшие цены</h3>
+      <p>Прямые контракты с отелями и авиакомпаниями позволяют нам предлагать лучшие цены</p>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-headset"></i>
+      </div>
+      <h3>Поддержка 24/7</h3>
+      <p>Наша служба поддержки доступна круглосуточно во время вашего путешествия</p>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-award"></i>
+      </div>
+      <h3>Опыт 14 лет</h3>
+      <p>Более 14 лет создаём незабываемые путешествия для наших клиентов</p>
+    </div>
+  </section>
+
+  <!-- Popular Tours -->
+  <section>
+    <h2 class="section-title">Популярные туры</h2>
+    
+    {% if tours %}
+      <div class="tours-grid">
+        {% for tour in tours %}
+          <div class="tour-card">
+            <div class="tour-image" style="background-image: url('https://images.unsplash.com/photo-{% cycle '1506905925346-21bda4d32df4' '1469474968028-56623f02e42e' '1488646953014-85cb44e25828' '1439066615861-dc4f6afc4ce5' '1483729558449-99ef09a8c325' as image_id %}?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+              {% if tour.available %}
+                <span class="tour-badge">Доступно</span>
+              {% endif %}
+            </div>
+            <div class="tour-content">
+              <h3 class="tour-title"><a href="{% url 'main:tour_detail' tour.id %}">{{ tour.title }}</a></h3>
+              <div class="tour-meta">
+                <span><i class="fas fa-globe-europe"></i> {{ tour.country }}</span>
+                <span><i class="fas fa-calendar-alt"></i> {{ tour.duration_days }} дней</span>
+                <span><i class="fas fa-users"></i> Группа до 15 чел.</span>
+              </div>
+              <p class="tour-description">{{ tour.description|truncatechars:120 }}</p>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="tour-price">{{ tour.price }} ₽</div>
+                <a href="{% url 'main:tour_detail' tour.id %}" class="btn btn-primary btn-small">
+                  Подробнее <i class="fas fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-4">
+        <p class="text-muted">Туры скоро появятся. Следите за обновлениями!</p>
+      </div>
+    {% endif %}
+    
+    <div class="text-center mt-4">
+      <a href="{% url 'main:search' %}" class="btn btn-outline">
+        <i class="fas fa-compass"></i>
+        Посмотреть все туры
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>14+</h3>
+          <p>Лет опыта</p>
+        </div>
+        <div class="stat-item">
+          <h3>50K+</h3>
+          <p>Довольных клиентов</p>
+        </div>
+        <div class="stat-item">
+          <h3>150+</h3>
+          <p>Направлений</p>
+        </div>
+        <div class="stat-item">
+          <h3>24/7</h3>
+          <p>Поддержка клиентов</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <h2 class="section-title">Отзывы наших клиентов</h2>
+    
+    <div class="testimonial-slider">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Отличный сервис! Тур в Италию превзошёл все ожидания. Гид был профессионалом, отель - просто сказка. Обязательно поеду с Sunny Travel снова!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">АС</div>
+          <div class="author-info">
+            <h4>Анна Смирнова</h4>
+            <p>Тур в Италию, май 2024</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Впервые путешествовал с таким ответственным туроператором. Все вопросы решались мгновенно, программа тура была идеально продумана. Рекомендую!"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">МИ</div>
+          <div class="author-info">
+            <h4>Михаил Иванов</h4>
+            <p>Тур в Таиланд, февраль 2024</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Спасибо за незабываемый отпуск в Турции! Все было организовано на высшем уровне. Отдельное спасибо гиду за интересные экскурсии."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">ЕК</div>
+          <div class="author-info">
+            <h4>Екатерина Козлова</h4>
+            <p>Тур в Турцию, июль 2024</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter">
+    <h2>Не пропустите лучшие предложения!</h2>
+    <p>Подпишитесь на рассылку и получайте эксклюзивные скидки и горящие туры первыми</p>
+    
+    <form class="newsletter-form" id="newsletterForm">
+      <input type="email" placeholder="Ваш email" required id="newsletterEmail">
+      <button type="submit" class="btn btn-secondary">
+        <i class="fas fa-paper-plane"></i>
+        Подписаться
+      </button>
+    </form>
+  </section>
+
+  <!-- Destinations Map -->
+  <section>
+    <h2 class="section-title">Наши направления</h2>
+    <div style="background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: var(--shadow);">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center;">
+        <div>
+          <i class="fas fa-umbrella-beach" style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"></i>
+          <h4>Пляжный отдых</h4>
+          <p class="text-muted">Турция, Египет, ОАЭ, Таиланд</p>
+        </div>
+        <div>
+          <i class="fas fa-skiing" style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"></i>
+          <h4>Горнолыжные туры</h4>
+          <p class="text-muted">Швейцария, Австрия, Франция</p>
+        </div>
+        <div>
+          <i class="fas fa-landmark" style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"></i>
+          <h4>Экскурсионные</h4>
+          <p class="text-muted">Италия, Испания, Греция</p>
+        </div>
+        <div>
+          <i class="fas fa-hiking" style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"></i>
+          <h4>Активный отдых</h4>
+          <p class="text-muted">Норвегия, Исландия, Канада</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Анимация для счетчиков статистики
+      const counters = document.querySelectorAll('.stat-item h3');
+      counters.forEach(counter => {
+        const target = parseInt(counter.textContent);
+        let current = 0;
+        const increment = target / 100;
+        const updateCounter = () => {
+          if (current < target) {
+            current += increment;
+            counter.textContent = Math.ceil(current) + (counter.textContent.includes('+') ? '+' : '');
+            setTimeout(updateCounter, 20);
+          } else {
+            counter.textContent = target + (counter.textContent.includes('+') ? '+' : '');
+          }
+        };
+        updateCounter();
+      });
+      
+      // Обработка формы подписки
+      const newsletterForm = document.getElementById('newsletterForm');
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const email = document.getElementById('newsletterEmail').value;
+          alert(`Спасибо за подписку, ${email}! Мы отправим вам лучшие предложения.`);
+          this.reset();
+        });
+      }
+      
+      // Анимация карточек при скролле
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+      
+      // Наблюдаем за карточками туров и фичами
+      document.querySelectorAll('.tour-card, .feature-card, .testimonial-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(card);
+      });
+    });
+  </script>
 {% endblock %}

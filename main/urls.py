@@ -1,8 +1,7 @@
-# main/urls.py (файл в приложении main)
 from django.urls import path
 from . import views
 
-app_name = 'main'  # Это важно!
+app_name = 'main'
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -14,4 +13,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
     path('booking/<int:booking_id>/', views.booking_detail, name='booking_detail'),
+    path('search/', views.tour_search, name='search'),
 ]

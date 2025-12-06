@@ -32,7 +32,22 @@ class PaymentForm(forms.ModelForm):
         fields = ['booking', 'amount', 'payment_method', 'comment']
         widgets = {
             'comment': forms.Textarea(attrs={'rows': 3}),
+            'amount': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
+            'booking': forms.Select(attrs={'class': 'form-control'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if user and user.is_authenticated:
+            bookings = Booking.objects.filter(user=user)
+            self.fields['booking'].queryset = bookings
+            # Добавляем данные о сумме в опции
+            self.fields['booking'].choices = [
+                (booking.id, f'Бронирование #{booking.id} - {booking.tour.title} ({booking.total_price} ₽)')
+                for booking in bookings
+            ]
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Пароль")

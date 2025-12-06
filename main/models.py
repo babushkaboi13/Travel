@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Client(models.Model):
     full_name = models.CharField(max_length=100)
@@ -63,7 +64,7 @@ class Booking(models.Model):
 class Payment(models.Model):
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField()
+    date = models.DateField(default=timezone.now)  # Добавлено default
     paid = models.BooleanField(default=False)
     payment_method = models.CharField(max_length=50)
     comment = models.CharField(max_length=255)
